@@ -4,7 +4,7 @@
 
 double f(double x);
 template <class fptr>
-double bisection(double xl, double xu, fptr fun, double eps);
+double bisection(double xl, double xu, fptr fun, double eps, int & niter);
 
 int main(int argc, char **argv)
 {
@@ -13,8 +13,9 @@ int main(int argc, char **argv)
   const double XL = std::atof(argv[1]);
   const double XU = std::atof(argv[2]);
   const double EPS = std::atof(argv[3]);
-
-  std::cout << bisection(XL, XU, f, EPS) << std::endl;
+  int counter = 0;
+  std::cout << bisection(XL, XU, f, EPS, counter) << std::endl;
+  std::cout << counter << std::endl;
   
   return 0;
 }
@@ -25,20 +26,23 @@ double f(double x)
 }
 
 template <class fptr>
-double bisection(double xl, double xu, fptr fun, double eps)
+double bisection(double xl, double xu, fptr fun, double eps, int & niter)
 {
   double xr = 0;
+  int iter = 1;
   for( ;  ; ) { // while(true)
     xr = (xl + xu)/2; // bisection
     // encontre la raiz?
     if (std::fabs(fun(xr)) <= eps) break;
     // actualizar los limites
+    iter++;
     if (fun(xr)*fun(xl) < 0) {
       xu = xr;
     } else {
       xl = xr;
     }
   }
+  niter = iter;
   return xr;
 }
 
