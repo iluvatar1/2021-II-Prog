@@ -5,6 +5,8 @@
 double f(double x);
 template <class fptr>
 double bisection(double xl, double xu, fptr fun, double eps, int & niter);
+template <class fptr>
+double regulafalsi(double xl, double xu, fptr fun, double eps, int & niter);
 
 int main(int argc, char **argv)
 {
@@ -16,7 +18,9 @@ int main(int argc, char **argv)
   int counter = 0;
   std::cout << bisection(XL, XU, f, EPS, counter) << std::endl;
   std::cout << counter << std::endl;
-  
+  std::cout << regulafalsi(XL, XU, f, EPS, counter) << std::endl;
+  std::cout << counter << std::endl;
+
   return 0;
 }
 
@@ -43,3 +47,21 @@ double bisection(double xl, double xu, fptr fun, double eps, int & niter)
   return xr;
 }
 
+
+template <class fptr>
+double regulafalsi(double xl, double xu, fptr fun, double eps, int & niter)
+{
+  double xr = xl;
+  int iter = 1;
+  while(std::fabs(fun(xr)) > eps) {
+    if (fun(xr)*fun(xl) < 0) {
+      xu = xr;
+    } else {
+      xl = xr;
+    }
+    xr = xu - (f(xu)*(xl-xu))/(f(xl) - f(xu)); // regula falsi
+    iter++;
+  }
+  niter = iter;
+  return xr;
+}
