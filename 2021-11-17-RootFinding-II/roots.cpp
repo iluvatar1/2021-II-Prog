@@ -7,6 +7,8 @@ template <class fptr>
 double bisection(double xl, double xu, fptr fun, double eps, int & niter);
 template <class fptr>
 double regulafalsi(double xl, double xu, fptr fun, double eps, int & niter);
+template <class fptr>
+double newton(double x0, fptr fun, double eps, int & niter);
 
 int main(int argc, char **argv)
 {
@@ -19,6 +21,8 @@ int main(int argc, char **argv)
   std::cout << bisection(XL, XU, f, EPS, counter) << std::endl;
   std::cout << counter << std::endl;
   std::cout << regulafalsi(XL, XU, f, EPS, counter) << std::endl;
+  std::cout << counter << std::endl;
+  std::cout << newton(XU, f, EPS, counter) << std::endl;
   std::cout << counter << std::endl;
 
   return 0;
@@ -60,6 +64,22 @@ double regulafalsi(double xl, double xu, fptr fun, double eps, int & niter)
       xl = xr;
     }
     xr = xu - (f(xu)*(xl-xu))/(f(xl) - f(xu)); // regula falsi
+    iter++;
+  }
+  niter = iter;
+  return xr;
+}
+
+// xi+1 = xi - f(xi)/f'(xi)
+template <class fptr>
+double newton(double x0, fptr fun, double eps, int & niter)
+{
+  double h = 0.00001;
+  double xr = x0;
+  int iter = 1;
+  while(std::fabs(fun(xr)) > eps) {
+    double fderiv =  (fun(xr+h/2) - fun(xr-h/2))/h;
+    xr = xr - fun(xr)/fderiv;
     iter++;
   }
   niter = iter;
