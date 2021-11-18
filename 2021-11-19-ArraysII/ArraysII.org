@@ -1,0 +1,147 @@
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+# #+HTML_HEAD: <style>pre.src {background-color: #303030; color: #e5e5e5;}</style>
+#+title: Program for class arrays II + pointers
+#+author: William Oquendo
+#+email: woquendo@gmail.com
+
+* TODO Basic arrays again
+An array
+- is a contigous and homogeneous block of memory
+- can be static (size known already when compiling, limited by stack size) or
+  dynamic (size known in runtime, size limited by heap size)
+- can be initialized from the beginning : src_cpp[:exports code]{double data[N]{1};} will make
+  the first element equal to 1 and the remaining equal to 0.
+
+*Always compile with sanitizers ~-sanitize=address -fsanitize=undefined
+-fsanitize=leak~*
+
+
+#+begin_src cpp :tangle basic_array.cpp
+// Computing dot product
+#include <iostream>
+
+int main(int argc, char **argv)
+{
+    // double x1 = 9.87, y1 = -0.65, z1 = 7.65432;
+    // double x2 = -5.432, y2 = -0.6598876, z2 = -0.64359;
+    //std::cout << x1*x2 + y1*y2 + z1*z2 << std::endl;
+
+    // memoria = stack(estatico) + heap(dinamica)
+
+    // primitive arrays //limited by stack size
+    int N = 10000;
+    double v1[N]{9.87, -0.65, 7.65432}, v2[N]{-5.432, -0.6598876, -0.64359};
+    double dot = 0;
+    for (int ii = 0; ii < N; ii++) {
+        dot += v1[ii]*v2[ii];
+    }
+    std::cout << dot << std::endl;
+
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+: -58.1112
+
+* TODO Pointers basic [/]
+Goal: to learn what a pointer is (a variable that stores a memory address) and
+its relationship with primitive arrays
+
+#+begin_src cpp :tangle basic_pointer.cpp
+#include <iostream>
+
+int main(int argc, char *argv[]) {
+    double val = 0.987766;
+    double * ptr = nullptr; // pointer. Only stores memory addresses
+    ptr = &val; // ptr stores x memory address
+    //ptr = x; // error, cannot store common values
+    std::cout << "val : " << val  << std::endl;
+    std::cout << "&val: " << &val << std::endl;
+    std::cout << "ptr : " << ptr  << std::endl; // prints val address
+    std::cout << "*ptr: " << *ptr << std::endl; // prints val VALUE
+    std::cout << "&ptr: " << &ptr << std::endl; // prints ptr address
+    
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+| val   |              : |       0.987766 |
+| &val: | 0x7ffee570c398 |                |
+| ptr   |              : | 0x7ffee570c398 |
+| *ptr: |       0.987766 |                |
+| &ptr: | 0x7ffee570c390 |                |
+
+- [ ] Modify the previous code to include a pointer
+  #+begin_src cpp :tangle basic_array_pointer.cpp
+  // Computing dot product
+  #include <iostream>
+
+  int main(int argc, char **argv)
+  {
+      // double x1 = 9.87, y1 = -0.65, z1 = 7.65432;
+      // double x2 = -5.432, y2 = -0.6598876, z2 = -0.64359;
+      //std::cout << x1*x2 + y1*y2 + z1*z2 << std::endl;
+
+      // memoria = stack(estatico) + heap(dinamica)
+
+      // primitive arrays //limited by stack size
+      int N = 10000;
+      double v1[N]{9.87, -0.65, 7.65432};
+      double * ptr = nullptr;
+      ptr = &v1[0];
+      std::cout << v1[0] << std::endl;
+      std::cout << &v1[0] << std::endl;
+      std::cout << &v1[1] << std::endl;
+      std::cout << ptr << std::endl;
+      std::cout << ptr[0] << std::endl;
+      std::cout << ptr[1] << std::endl;
+      std::cout << *(ptr + 2) << std::endl;
+
+      return 0;
+  }
+  #+end_src
+
+  #+RESULTS:
+  |           9.87 |
+  | 0x7ffee77e4ae0 |
+  | 0x7ffee77e4ae8 |
+  | 0x7ffee77e4ae0 |
+  |           9.87 |
+  |          -0.65 |
+  |        7.65432 |
+
+* TODO Passing arrays to functions [0/3]
+Goal: create functions and pass arrays by reference.
+- [ ] Let's create a function that receives our vectors and returns their dot
+  product.
+- [ ] Also create a function to initialize the vectors
+- [ ] Create a function  print them, using the auto keyword.
+
+* TODO Talk about dynamic memory [/]
+Goal: Learn how to use ~new~ and ~delete~
+
+- [ ] Create a dynamic array with size read from the command line args. Check
+  memory comsumption
+
+  #+begin_src cpp :tangle newdelete.cpp :cmdline "1023"
+#include <iostream>
+
+int main(int argc, char *argv[]) {
+    int N = std::atoi(argv[1]);
+    double * data = nullptr;
+    data = new double [N]; // ask for memory
+    for(int ii = 0; ii < N; ++ii) {
+        data[ii] = 2*ii/(2*ii + 1.0);
+    }
+    std::cout << data[N/2] << std::endl;
+    
+    delete [] data; // return memory
+    
+    return 0;
+}
+  #+end_src
+
+  #+RESULTS:
+  : 0.999022
