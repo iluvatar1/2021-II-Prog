@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2021-11-18 Thu 15:18 -->
+<!-- 2021-11-18 Thu 19:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Program for class arrays II + pointers</title>
@@ -207,16 +207,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc61a2bb">1. <span class="todo TODO">TODO</span> Basic arrays again</a></li>
-<li><a href="#org666f77e">2. <span class="todo TODO">TODO</span> Pointers basic <code>[/]</code></a></li>
-<li><a href="#orgdbf1544">3. <span class="todo TODO">TODO</span> Passing arrays to functions <code>[0/3]</code></a></li>
-<li><a href="#orge7ae811">4. <span class="todo TODO">TODO</span> Talk about dynamic memory <code>[/]</code></a></li>
+<li><a href="#orgedb2f0f">1. <span class="todo TODO">TODO</span> Basic arrays again</a></li>
+<li><a href="#orgba127f4">2. <span class="todo TODO">TODO</span> Pointers basic <code>[/]</code></a></li>
+<li><a href="#orgadca18a">3. <span class="todo TODO">TODO</span> Passing arrays to functions <code>[0/3]</code></a></li>
+<li><a href="#orgc99ba97">4. <span class="todo TODO">TODO</span> Talk about dynamic memory <code>[/]</code></a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc61a2bb" class="outline-2">
-<h2 id="orgc61a2bb"><span class="section-number-2">1.</span> <span class="todo TODO">TODO</span> Basic arrays again</h2>
+<div id="outline-container-orgedb2f0f" class="outline-2">
+<h2 id="orgedb2f0f"><span class="section-number-2">1.</span> <span class="todo TODO">TODO</span> Basic arrays again</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 An array
@@ -260,11 +260,13 @@ the first element equal to 1 and the remaining equal to 0.</li>
 <span style="color: #ffffff;">}</span>
 </pre>
 </div>
+
+<iframe width="800" height="500" frameborder="0" src="https://pythontutor.com/iframe-embed.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28int%20argc,%20char%20**argv%29%0A%7B%0A%20%20%20%20//%20double%20x1%20%3D%209.87,%20y1%20%3D%20-0.65,%20z1%20%3D%207.65432%3B%0A%20%20%20%20//%20double%20x2%20%3D%20-5.432,%20y2%20%3D%20-0.6598876,%20z2%20%3D%20-0.64359%3B%0A%20%20%20%20//std%3A%3Acout%20%3C%3C%20x1*x2%20%2B%20y1*y2%20%2B%20z1*z2%20%3C%3C%20std%3A%3Aendl%3B%0A%0A%20%20%20%20//%20memoria%20%3D%20stack%28estatico%29%20%2B%20heap%28dinamica%29%0A%0A%20%20%20%20//%20primitive%20arrays%20//limited%20by%20stack%20size%0A%20%20%20%20int%20N%20%3D%2010000%3B%0A%20%20%20%20double%20v1%5BN%5D%7B9.87,%20-0.65,%207.65432%7D,%20v2%5BN%5D%7B-5.432,%20-0.6598876,%20-0.64359%7D%3B%0A%20%20%20%20double%20dot%20%3D%200%3B%0A%20%20%20%20for%20%28int%20ii%20%3D%200%3B%20ii%20%3C%20N%3B%20ii%2B%2B%29%20%7B%0A%20%20%20%20%20%20%20%20dot%20%2B%3D%20v1%5Bii%5D*v2%5Bii%5D%3B%0A%20%20%20%20%7D%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20dot%20%3C%3C%20std%3A%3Aendl%3B%0A%0A%20%20%20%20return%200%3B%0A%7D&codeDivHeight=400&codeDivWidth=350&curInstr=0&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D"> </iframe>
 </div>
 </div>
 
-<div id="outline-container-org666f77e" class="outline-2">
-<h2 id="org666f77e"><span class="section-number-2">2.</span> <span class="todo TODO">TODO</span> Pointers basic <code>[/]</code></h2>
+<div id="outline-container-orgba127f4" class="outline-2">
+<h2 id="orgba127f4"><span class="section-number-2">2.</span> <span class="todo TODO">TODO</span> Pointers basic <code>[/]</code></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Goal: to learn what a pointer is (a variable that stores a memory address) and
@@ -289,6 +291,12 @@ its relationship with primitive arrays
 <span style="color: #ffffff;">}</span>
 </pre>
 </div>
+
+
+<p>
+C++/Python tutor visualization
+</p>
+<iframe width="800" height="500" frameborder="0" src="https://pythontutor.com/iframe-embed.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28int%20argc,%20char%20*argv%5B%5D%29%20%7B%0A%20%20%20%20double%20val%20%3D%200.987766%3B%0A%20%20%20%20double%20*%20ptr%20%3D%20nullptr%3B%20//%20pointer.%20Only%20stores%20memory%20addresses%0A%20%20%20%20ptr%20%3D%20%26val%3B%20//%20ptr%20stores%20x%20memory%20address%0A%20%20%20%20//ptr%20%3D%20x%3B%20//%20error,%20cannot%20store%20common%20values%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20%22val%20%3A%20%22%20%3C%3C%20val%20%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20%22%26val%3A%20%22%20%3C%3C%20%26val%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20%22ptr%20%3A%20%22%20%3C%3C%20ptr%20%20%3C%3C%20std%3A%3Aendl%3B%20//%20prints%20val%20address%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20%22*ptr%3A%20%22%20%3C%3C%20*ptr%20%3C%3C%20std%3A%3Aendl%3B%20//%20prints%20val%20VALUE%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20%22%26ptr%3A%20%22%20%3C%3C%20%26ptr%20%3C%3C%20std%3A%3Aendl%3B%20//%20prints%20ptr%20address%0A%20%20%20%20%0A%20%20%20%20return%200%3B%0A%7D%0A&codeDivHeight=400&codeDivWidth=350&curInstr=0&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D"> </iframe>
 
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> <p>
@@ -327,8 +335,8 @@ Modify the previous code to include a pointer
 </div>
 </div>
 
-<div id="outline-container-orgdbf1544" class="outline-2">
-<h2 id="orgdbf1544"><span class="section-number-2">3.</span> <span class="todo TODO">TODO</span> Passing arrays to functions <code>[0/3]</code></h2>
+<div id="outline-container-orgadca18a" class="outline-2">
+<h2 id="orgadca18a"><span class="section-number-2">3.</span> <span class="todo TODO">TODO</span> Passing arrays to functions <code>[0/3]</code></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Goal: create functions and pass arrays by reference.
@@ -342,8 +350,8 @@ product.</li>
 </div>
 </div>
 
-<div id="outline-container-orge7ae811" class="outline-2">
-<h2 id="orge7ae811"><span class="section-number-2">4.</span> <span class="todo TODO">TODO</span> Talk about dynamic memory <code>[/]</code></h2>
+<div id="outline-container-orgc99ba97" class="outline-2">
+<h2 id="orgc99ba97"><span class="section-number-2">4.</span> <span class="todo TODO">TODO</span> Talk about dynamic memory <code>[/]</code></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Goal: Learn how to use <code>new</code> and <code>delete</code>
@@ -379,7 +387,7 @@ memory comsumption
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: William Oquendo</p>
-<p class="date">Created: 2021-11-18 Thu 15:18</p>
+<p class="date">Created: 2021-11-18 Thu 19:56</p>
 </div>
 </body>
 </html>
