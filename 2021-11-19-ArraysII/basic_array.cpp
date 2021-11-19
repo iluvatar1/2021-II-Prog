@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     double v1[N]{9.87, -0.65, 7.65432}, v2[N]{-5.432, -0.6598876, -0.64359};
     double dot = 0;
     for (int ii = 0; ii < N; ii++) {
-        dot += v1[ii]*v2[ii];
+	dot += v1[ii]*v2[ii];
     }
     std::cout << dot << std::endl;
 
