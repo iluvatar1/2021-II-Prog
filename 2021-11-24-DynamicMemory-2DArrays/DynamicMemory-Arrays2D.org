@@ -1,0 +1,138 @@
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+INCLUDE: ~/latex/org-latex-preamble.org
+#+STARTUP: overview
+#+KEYWORDS:
+#+LANGUAGE:  es
+#+OPTIONS: toc:nil # do not put toc, remove if you want a toc
+# #+HTML_HEAD: <style>pre.src {background-color: #303030; color: #e5e5e5;}</style>
+#+title: Dynamic Memory and 2D arrays as one dimensional arrays
+#+author: William Oquendo
+#+email: woquendo@gmail.com
+
+* TODO Dynamic memory [/]
+Goal: Learn how to use ~new~ and ~delete~
+
+A dynamic array is not limited by the stack size, it goes to the heap and can
+be (comparatively to the stack) very large.
+
+But one has to be very careful with memory managment, always returning what we
+have asked for.
+
+- [ ] Create a dynamic array with size read from the command line args. Check
+  memory comsumption
+
+  #+begin_src cpp :tangle newdelete.cpp :cmdline "1023"
+#include <iostream>
+
+int main(int argc, char *argv[]) {
+    int N = std::atoi(argv[1]);
+    double * data = nullptr;
+    data = new double [N]; // ask for memory
+    for(int ii = 0; ii < N; ++ii) {
+        data[ii] = 2*ii/(2*ii + 1.0);
+    }
+    std::cout << data[N/2] << std::endl;
+    
+    delete [] data; // return memory
+    
+    return 0;
+}
+  #+end_src
+
+  #+RESULTS:
+  : 0.999022
+
+  Python/c++ tutor visualization
+  #+begin_export html
+<iframe width="800" height="500" frameborder="0" src="https://pythontutor.com/iframe-embed.html#code=%23include%20%3Ciostream%3E%0A%0Aint%20main%28int%20argc,%20char%20*argv%5B%5D%29%20%7B%0A%20%20%20%20int%20N%20%3D%20std%3A%3Aatoi%28argv%5B1%5D%29%3B%0A%20%20%20%20double%20*%20data%20%3D%20nullptr%3B%0A%20%20%20%20data%20%3D%20new%20double%20%5BN%5D%3B%20//%20ask%20for%20memory%0A%20%20%20%20for%28int%20ii%20%3D%200%3B%20ii%20%3C%20N%3B%20%2B%2Bii%29%20%7B%0A%20%20%20%20%20%20%20%20data%5Bii%5D%20%3D%202*ii/%282*ii%20%2B%201.0%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20std%3A%3Acout%20%3C%3C%20data%5BN/2%5D%20%3C%3C%20std%3A%3Aendl%3B%0A%20%20%20%20%0A%20%20%20%20delete%20%5B%5D%20data%3B%20//%20return%20memory%0A%20%20%20%20%0A%20%20%20%20return%200%3B%0A%7D&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=cpp_g%2B%2B9.3.0&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+  #+end_export
+
+
+- [ ] Memory leaks: Using ~new~ without ~delete~
+  #+begin_src cpp :tangle leak.cpp
+#include <iostream>
+
+void leaking(int N);
+
+int main(int argc, char *argv[]) {
+    int size = 10000000;
+    int reps = 1000;
+
+    for(int ii = 0 ; ii < reps; ++ii) {
+        leaking(size);
+        if (reps%100 == 0) {
+            std::cout << "Press enter\n";
+            std::cin.get();
+        }
+    }
+
+    return 0;
+}
+
+void leaking(int N){
+    double *localptr = new double [N]{0};
+    localptr[N/2] = 0.98;
+    // no delete?
+}
+  #+end_src
+
+  Check compiling with and without ~-fsanitize=leak~ , then run it with ~valgrind~
+
+* TODO 2D arrays modeled as 1d arrays
+Goal: To learn how to operate matrices 2d arrays but using a large one
+dimensional array.
+[[file:2d-array.png]]
+
+How is the 2D array mapped into memory?
+
+[[file:2d-array-memory.png]]
+
+So how can I model the 2D array with the 1D array?
+
+[[file:1d-2d-mapping.png]]
+
+- [ ] Write a program to model a matrix with a dynamic 1D array.
+- [ ] Fill the matrix with the formula $A_{ij} = 2*i + j$
+- [ ] Create a function to compute the trace of that matrix
+
+  #+begin_src cpp :tangle array2D_1D.cpp
+#include <iostream>
+
+void fill(double *data, int nx, int ny);
+double trace(const double *data, int nx, int ny);
+
+int main(int argc, char *argv[]) {
+    int nrows = 10;
+    int ncols = 10;
+
+    // get memory
+    double * matrix = new double [nrows*ncols] {0.0};
+
+    // fill the matrix
+    fill(matrix, nrows, ncols);
+
+    // compute and print the trace
+    std::cout << trace(matrix, nrows, ncols) << std::endl;
+    
+    // release memory
+    delete [] matrix;
+    
+    return 0;
+}
+
+void fill(double *data, int nx, int ny)
+{
+        
+}
+
+
+double trace(const double *data, int nx, int ny)
+{
+    
+}
+  #+end_src
+
+*** Exercises
+1. Write a program that computes the transpose of a matrix
+2. Write a program that compute matrix multiplication.
+3. Explore how the total multiplication time grows with the matrix size.
