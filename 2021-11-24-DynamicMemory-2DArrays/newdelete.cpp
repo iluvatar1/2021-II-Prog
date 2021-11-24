@@ -10,6 +10,8 @@ int main(int argc, char *argv[]) {
     std::cout << data[N/2] << std::endl;
 
     delete [] data; // return memory
+    data = nullptr;
+    delete [] data; // return memory
 
     return 0;
 }

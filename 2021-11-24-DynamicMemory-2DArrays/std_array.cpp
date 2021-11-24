@@ -8,6 +8,7 @@ int main(void)
     //double data[N] {0};
     std::array<double, N> data;
 
+    std::cout << "&data[0]" << &data[0] << std::endl;
     std::cout << "size: " << data.size() << std::endl;
     std::cout << "max_size: " << data.max_size() << std::endl;
 
