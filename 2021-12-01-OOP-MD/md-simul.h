@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "particle.h"
 #include "integrator.h"
