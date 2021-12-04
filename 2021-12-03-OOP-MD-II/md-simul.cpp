@@ -16,6 +16,24 @@ void compute_force(Particle & body)
 
   // gravitational force
   body.Fy += body.mass*G;
+
+  // floor
+  double delta = body.rad - body.Ry;
+  if (delta > 0) {
+    body.Fy += K*delta;
+  }
+
+  // Right wall
+  delta = body.Rx + body.rad - LR;
+  if (delta > 0) {
+    body.Fx -= K*delta;
+  }
+
+  // Left wall
+  delta = LL - body.Rx + body.rad;
+  if (delta > 0) {
+    body.Fx += K*delta;
+  }
 }
 
 void print(Particle & body, double time)

@@ -21,7 +21,7 @@ void compute_force(Particle & body)
   double delta = body.rad - body.Ry;
   if (delta > 0) {
     body.Fy += K*delta;
-    body.Fy -= 1.9876*body.Vy; 
+    //body.Fy -= 1.9876*body.Vy; 
   }
 }
 
